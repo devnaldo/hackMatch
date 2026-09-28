@@ -66,7 +66,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Nav Items */}
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <div className="hidden md:flex space-x-6 items-center">
               <Link to="/dashboard" className={`flex items-center gap-1.5 px-1 py-4.5 text-xs font-semibold uppercase tracking-wider ${activeLink('/dashboard')}`}>
                 Dashboard
@@ -90,6 +90,15 @@ const Navbar: React.FC = () => {
               </Link>
               <Link to="/profile" className={`flex items-center gap-1.5 px-1 py-4.5 text-xs font-semibold uppercase tracking-wider ${activeLink('/profile')}`}>
                 Profile
+              </Link>
+            </div>
+          ) : (
+            <div className="hidden md:flex space-x-6 items-center">
+              <Link to="/hackathons" className={`flex items-center gap-1.5 px-1 py-4.5 text-xs font-semibold uppercase tracking-wider ${activeLink('/hackathons')}`}>
+                Hackathons
+              </Link>
+              <Link to="/ideas" className={`flex items-center gap-1.5 px-1 py-4.5 text-xs font-semibold uppercase tracking-wider ${activeLink('/ideas')}`}>
+                Project Ideas
               </Link>
             </div>
           )}
@@ -254,21 +263,37 @@ const Navbar: React.FC = () => {
                 </button>
               </>
             ) : (
-              <div className="p-3 space-y-2">
+              <div className="p-2 space-y-1">
                 <Link
-                  to="/login"
+                  to="/hackathons"
                   onClick={() => setIsOpen(false)}
-                  className="block text-center w-full py-2 text-xs font-semibold border border-beige rounded-xl text-slate-700 hover:bg-beige/40"
+                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm ${activeMobileLink('/hackathons')}`}
                 >
-                  Sign In
+                  Hackathons
                 </Link>
                 <Link
-                  to="/register"
+                  to="/ideas"
                   onClick={() => setIsOpen(false)}
-                  className="block text-center w-full py-2 text-xs font-semibold bg-primary hover:bg-primary-hover rounded-xl text-white shadow-sm"
+                  className={`flex items-center gap-3 px-3 py-2 rounded-xl text-sm ${activeMobileLink('/ideas')}`}
                 >
-                  Get Started
+                  Project Ideas
                 </Link>
+                <div className="pt-2 border-t border-beige space-y-2">
+                  <Link
+                    to="/login"
+                    onClick={() => setIsOpen(false)}
+                    className="block text-center w-full py-2 text-xs font-semibold border border-beige rounded-xl text-slate-700 hover:bg-beige/40"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setIsOpen(false)}
+                    className="block text-center w-full py-2 text-xs font-semibold bg-primary hover:bg-primary-hover rounded-xl text-white shadow-sm"
+                  >
+                    Get Started
+                  </Link>
+                </div>
               </div>
             )}
           </div>

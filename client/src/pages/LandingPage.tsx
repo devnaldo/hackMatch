@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { 
-  Terminal, 
   ArrowRight, 
   Layers, 
   Lightbulb, 
@@ -49,46 +48,6 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="bg-primary-light min-h-screen text-brown font-sans">
-      {/* Top minimalistic header bar (only shown if not logged in) */}
-      <header className="border-b border-beige bg-cream sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <Terminal size={18} className="text-primary" />
-            <span className="font-bold tracking-tight text-sm text-brown">
-              Hack<span className="text-primary">Match</span>
-            </span>
-            <span className="px-2 py-0.5 text-[10px] font-semibold bg-secondary-light text-slate-600 rounded">
-              v1.0.0
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            {isAuthenticated ? (
-              <Link
-                to="/dashboard"
-                className="px-3 py-1.5 text-xs font-bold text-white bg-primary hover:bg-primary-hover rounded transition-colors"
-              >
-                Go to Workspace
-              </Link>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className="px-3 py-1.5 text-xs font-semibold text-slate-500 hover:text-brown transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="px-3 py-1.5 text-xs font-bold text-white bg-primary hover:bg-primary-hover rounded transition-colors"
-                >
-                  Get Started
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
 
       {/* Main split grid workspace */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16">
@@ -195,7 +154,9 @@ const LandingPage: React.FC = () => {
                   <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1">
                     <Calendar size={12} /> Upcoming Hackathons
                   </span>
-                  <span className="text-[9px] text-slate-500 hover:underline font-semibold cursor-pointer">Browse 8 events</span>
+                  <Link to="/hackathons" className="text-[9px] text-primary hover:underline font-semibold">
+                    Browse events &rarr;
+                  </Link>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -220,7 +181,9 @@ const LandingPage: React.FC = () => {
                   <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider flex items-center gap-1">
                     <Lightbulb size={12} /> Live Project Briefs
                   </span>
-                  <span className="text-[9px] text-slate-500 hover:underline font-semibold cursor-pointer">View 16 briefs</span>
+                  <Link to="/ideas" className="text-[9px] text-primary hover:underline font-semibold">
+                    View project briefs &rarr;
+                  </Link>
                 </div>
                 
                 <div className="space-y-2">
@@ -297,16 +260,36 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="border-t border-beige bg-primary-light text-slate-400 text-[11px] py-6">
+      <footer className="border-t border-beige bg-cream text-slate-500 text-xs py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div>
-            <span className="text-brown font-bold">HackMatch Workspace</span>
-            <span className="ml-2 text-slate-400">| Academic team utility</span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono font-bold text-brown">&gt;_ HackMatch</span>
+            <span className="text-slate-400">|</span>
+            <span className="text-slate-400 text-[11px]">Smart Hackathon Team Formation Platform</span>
           </div>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-slate-650">Documentation</a>
-            <a href="#" className="hover:text-slate-650">API Status</a>
-            <a href="#" className="hover:text-slate-650">Support Desk</a>
+          <div className="flex items-center gap-5 text-xs font-medium">
+            <Link to="/hackathons" className="text-slate-500 hover:text-brown transition-colors">
+              Hackathons
+            </Link>
+            <Link to="/ideas" className="text-slate-500 hover:text-brown transition-colors">
+              Project Ideas
+            </Link>
+            <a 
+              href="http://localhost:5000/api-docs" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-slate-500 hover:text-brown transition-colors"
+            >
+              API Docs
+            </a>
+            <a 
+              href="http://localhost:5000/api/health" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-slate-500 hover:text-brown transition-colors"
+            >
+              API Status
+            </a>
           </div>
         </div>
       </footer>
