@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7A8F75; /* Soft Sage Green */
+  --color-primary-hover: #677A62;
+  --color-primary-light: #FAF8F5;
+  
+  --color-secondary: #8A9478; /* Muted Olive */
+  --color-secondary-dark: #6E755E;
+  --color-secondary-light: #F4F1EC; /* Secondary Surface */
+  
+  --color-accent: #7A8F75;
+  --color-accent-hover: #677A62;
+  --color-accent-light: #FAF8F5;
+  
+  --color-beige: #E7E2DA; /* Light Border */
+  --color-cream: #FFFFFF; /* Surface (Clean White) */
+  --color-terracotta: #7A8F75; /* Replaced Orange Accents with Soft Sage Green */
+  --color-brown: #2D2D2D; /* Primary Text (Charcoal) */
+  --color-dusty-rose: #B8AEA2; /* Replaced Rose with Warm Stone */
+  --color-sage: #7A8F75; /* Soft Sage Green */
+  --color-peach: #8A9478; /* Replaced Peach with Muted Olive */
+  --color-blue-gray: #6B7280; /* Secondary Text (Warm Gray) */
+  
+  --font-sans: 'Plus Jakarta Sans', sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: #FAF8F5; /* Warm neutral background */
+    color: #2D2D2D; /* Primary Text Charcoal */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-sans);
+  }
+}
+
+/* Flat, bordered cards */
+.glass {
+  background: #FFFFFF;
+  border: 1px solid #E7E2DA;
+}
+
+.dark-glass {
+  background: #F4F1EC;
+  border: 1px solid #E7E2DA;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
+}

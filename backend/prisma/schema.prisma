@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String                 @id @default(uuid())
+  name                  String
+  email                 String                 @unique
+  password              String
+  college               String
+  branch                String?
+  bio                   String?
+  profilePicture        String                 @default("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=200")
+  skills                String                 @default("[]") // JSON string of string[]
+  experience            String                 @default("beginner") // beginner, intermediate, advanced
+  githubUrl             String?
+  linkedinUrl           String?
+  portfolioUrl          String?
+  isAvailable           Boolean                @default(true)
+  role                  String                 @default("user") // user, admin
+  isBanned              Boolean                @default(false)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  teamsLed              Team[]                 @relation("TeamLeader")
+  teamMemberships       TeamMember[]
+  hackathonRegistrations HackathonParticipant[]
+  sentRequests          TeamRequest[]          @relation("SentRequests")
+  receivedRequests      TeamRequest[]          @relation("ReceivedRequests")
+  messages              Message[]
+  notifications         Notification[]
+  projectIdeas          ProjectIdea[]
+  badges                Badge[]
+}
+
+model Hackathon {
+  id                   String                 @id @default(uuid())
+  title                String
+  organizer            String
+  description          String
+  date                 String
+  registrationDeadline String
+  location             String
+  mode                 String                 @default("online") // online, offline, hybrid
+  prizePool            String
+  minTeamSize          Int                    @default(1)
+  maxTeamSize          Int                    @default(4)
+  tags                 String                 @default("[]") // JSON string of string[]
+  registrationLink     String?
+  rules                String?
+  isActive             Boolean                @default(true)
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+
+  teams                Team[]
+  participants         HackathonParticipant[]
+}
+
+model Team {
+  id             String        @id @default(uuid())
+  teamName       String
+  description    String
+  leaderId       String
+  requiredSkills String        @default("[]") // JSON string of string[]
+  maxSize        Int           @default(4)
+  hackathonId    String?
+  status         String        @default("open") // open, full, closed
+  projectIdea    String?
+  tags           String        @default("[]") // JSON string of string[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  leader         User          @relation("TeamLeader", fields: [leaderId], references: [id], onDelete: Cascade)
+  hackathon      Hackathon?    @relation(fields: [hackathonId], references: [id], onDelete: SetNull)
+  members        TeamMember[]
+  requests       TeamRequest[]
+  messages       Message[]
+}
+
+model TeamMember {
+  id       String   @id @default(uuid())
+  teamId   String
+  userId   String
+  joinedAt DateTime @default(now())
+
+  team     Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+}
+
+model HackathonParticipant {
+  id           String    @id @default(uuid())
+  hackathonId  String
+  userId       String
+  registeredAt DateTime  @default(now())
+
+  hackathon    Hackathon @relation(fields: [hackathonId], references: [id], onDelete: Cascade)
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([hackathonId, userId])
+}
+
+model TeamRequest {
+  id         String   @id @default(uuid())
+  type       String   // join_request, invitation
+  senderId   String
+  receiverId String
+  teamId     String
+  status     String   @default("pending") // pending, accepted, rejected
+  message    String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sender     User     @relation("SentRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver   User     @relation("ReceivedRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  team       Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  teamId    String
+  senderId  String
+  content   String
+  type      String   @default("text") // text, link, system
+  createdAt DateTime @default(now())
+
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String
+  text      String
+  type      String   // join_request, invitation, acceptance, rejection, deadline, left_team, custom
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ProjectIdea {
+  id           String   @id @default(uuid())
+  title        String
+  domain       String   // AI, Web, Blockchain, Healthcare, Education, Finance, Other
+  description  String
+  submittedById String
+  upvotes      String   @default("[]") // JSON string of user IDs
+  tags         String   @default("[]") // JSON string of string[]
+  createdAt    DateTime @default(now())
+
+  submittedBy  User     @relation(fields: [submittedById], references: [id], onDelete: Cascade)
+}
+
+model Badge {
+  id       String   @id @default(uuid())
+  userId   String
+  skill    String
+  level    String
+  earnedAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
